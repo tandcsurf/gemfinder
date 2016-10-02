@@ -1,0 +1,65 @@
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+
+<div class="container">
+  <div id="searchstuff">
+  <input id="searchTerm" name="search" placeholder="Search for..."></input>
+<button id="search" onclick="letsLook()">Submit</button>
+</div>
+  <div id="output"></div>
+</div>
+
+
+  <script>
+      function letsLook() {
+  var searchTerm = document.getElementById("searchTerm").value;
+  var url = "https://en.wikipedia.org/w/api.php?action=query&generator=prefixsearch&gpssearch="+ searchTerm +"&prop=pageprops&rvprop=content&format=json";
+  $.ajax(
+      {type: "GET",
+      url: url,
+      dataType: "jsonp",
+      success: function (data){
+        var result = data.query.pages;
+        //console.log("big object", data.query.pages);
+        var resultToArray = Object.keys(result);
+        var reduced = resultToArray.reduce((previous, current) => Math.min(previous, current));
+        //console.log("json object to array", result[reduced]);
+          var pagePath = result[reduced]["title"].split(" ").join("_");
+          var url = "https://en.wikipedia.org/wiki/" + pagePath;
+          var urlWithPic = "http://en.wikipedia.org/w/api.php?action=query&titles=" + result[reduced]["title"] + "&exintro=1&prop=pageimages%7Cextracts&format=json&pithumbsize=100";
+
+          console.log(urlWithPic);
+          var newA = document.createElement("a")
+          newA.innerHTML = result[reduced]["title"] + "<br>" + "<br>";
+          //console.log(newA);
+          newA.setAttribute("href", url);
+          document.getElementById("output").appendChild(newA);
+          $.ajax(
+            {type: "GET",
+            url: urlWithPic,
+            dataType: "jsonp",
+            success: function (data) {
+              console.log(data);
+              var resultToArray2 = Object.keys(result);
+              var resultImage = data.query.pages[resultToArray2[0]]["thumbnail"]["source"];
+              var resultExtract = data.query.pages[resultToArray2[0]]["extract"];
+              $("#output").append('<img src='+resultImage+ '>');
+              $("#output").append(resultExtract);
+              console.log("log image", resultImage);
+              console.log("log extract", resultExtract);
+            },
+            error: function (err){
+              console.log(err);
+            }
+          }
+          )
+    },
+      error: function(error){
+        console.log(error);
+      }
+   });
+};
+</script>
