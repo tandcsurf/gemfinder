@@ -25,11 +25,11 @@
         var result = data.query.pages;
         //console.log("big object", data.query.pages);
         var resultToArray = Object.keys(result);
-        var reduced = resultToArray.reduce((previous, current) => Math.min(previous, current));
+        var reduced = resultToArray.reduce(function(previous, current) { return Math.min(previous, current)});
         //console.log("json object to array", result[reduced]);
           var pagePath = result[reduced]["title"].split(" ").join("_");
           var url = "https://en.wikipedia.org/wiki/" + pagePath;
-          var urlWithPic = "https://en.wikipedia.org/w/api.php?action=query&titles=" + result[reduced]["title"] + "&exintro=1&prop=pageimages%7Cextracts&format=json&pithumbsize=100";
+          var urlWithPic = "https://en.wikipedia.org/w/api.php?action=query&titles=" + result[reduced]["title"] + "&exintro=1&prop=pageimages%7Cextracts&format=json&pithumbsize=300";
 
           console.log(urlWithPic);
           var newA = document.createElement("a")
