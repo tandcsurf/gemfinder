@@ -29,7 +29,7 @@
         //console.log("json object to array", result[reduced]);
           var pagePath = result[reduced]["title"].split(" ").join("_");
           var url = "https://en.wikipedia.org/wiki/" + pagePath;
-          var urlWithPic = "http://en.wikipedia.org/w/api.php?action=query&titles=" + result[reduced]["title"] + "&exintro=1&prop=pageimages%7Cextracts&format=json&pithumbsize=100";
+          var urlWithPic = "https://en.wikipedia.org/w/api.php?action=query&titles=" + result[reduced]["title"] + "&exintro=1&prop=pageimages%7Cextracts&format=json&pithumbsize=100";
 
           console.log(urlWithPic);
           var newA = document.createElement("a")
