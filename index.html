@@ -44,6 +44,7 @@
             dataType: "jsonp",
             success: function (data) {
               console.log(data);
+              $( "#output").empty();
               var resultToArray2 = Object.keys(result);
               var resultImage = data.query.pages[resultToArray2[0]]["thumbnail"]["source"];
               var resultExtract = data.query.pages[resultToArray2[0]]["extract"];
